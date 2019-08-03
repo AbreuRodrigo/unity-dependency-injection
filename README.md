@@ -1,7 +1,7 @@
 # Unity Dependency Injection
 A simple dependency injection system for Unity
 
-The intention of this simple unity plugin is to facilitate the injection of components into your Injector classes. It's a very simple project with lots of space for improvements, the main idea behind it right now is to avoid singletons and dependency components passed as objects through inspector.
+The intention of this simple unity plugin is to facilitate the injection of components into your Injector classes. It has lots of space for improvements, the main idea behind it right now is to avoid singletons and dependency components passed as objects through inspector.
 
 # Usage
 There's an example folder showing how to use it and a sample scene "ExampleScene".
