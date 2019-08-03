@@ -12,40 +12,40 @@ To make your class a dependency it should implement the interface <b><i>IDepende
 
 Example:
 
-using UnityEngine;
-using DI.Injection;
+	using UnityEngine;
+	using DI.Injection;
 
-public class GameManager : MonoBehaviour, IInjector
-{
-	[Inject] private AudioManager audioManager;
-	[Inject] private SpriteManager spriteManager;
-
-	public void Start()
+	public class GameManager : MonoBehaviour, IInjector
 	{
-		//Testing the dependencies injected
-		audioManager?.PlayAudio();
-		spriteManager?.DrawSprite();
+		[Inject] private AudioManager audioManager;
+		[Inject] private SpriteManager spriteManager;
+
+		public void Start()
+		{
+			//Testing the dependencies injected
+			audioManager?.PlayAudio();
+			spriteManager?.DrawSprite();
+		}
 	}
-}
 
-using DI.Injection;
-using UnityEngine;
+	using DI.Injection;
+	using UnityEngine;
 
-public class AudioManager : MonoBehaviour, IDependency
-{
-	public void PlayAudio()
+	public class AudioManager : MonoBehaviour, IDependency
 	{
-		Debug.Log("Playing audio...");
+		public void PlayAudio()
+		{
+			Debug.Log("Playing audio...");
+		}
 	}
-}
 
-using DI.Injection;
-using UnityEngine;
+	using DI.Injection;
+	using UnityEngine;
 
-public class SpriteManager : MonoBehaviour, IDependency
-{
-	public void DrawSprite()
+	public class SpriteManager : MonoBehaviour, IDependency
 	{
-		Debug.Log("Drawing sprite...");
+		public void DrawSprite()
+		{
+			Debug.Log("Drawing sprite...");
+		}
 	}
-}
