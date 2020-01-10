@@ -1,7 +1,7 @@
 ﻿using DI.Injection;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour, IDependency
+public class AudioManager : MonoBehaviour, IDependency, IAudioManager
 {
 	public void PlayAudio()
 	{

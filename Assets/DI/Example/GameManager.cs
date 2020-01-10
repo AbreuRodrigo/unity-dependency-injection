@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
 using DI.Injection;
 
+public interface IAudioManager
+{
+	void PlayAudio();
+}
+
 public class GameManager : MonoBehaviour, IInjector
 {
-	[Inject] private AudioManager audioManager;
+	[Inject] private IAudioManager audioManager;
 	[Inject] private SpriteManager spriteManager;
 
 	public void Start()
