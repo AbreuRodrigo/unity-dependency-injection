@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace DI.Injection
 {
@@ -12,16 +13,38 @@ namespace DI.Injection
 		private string dependenciesInjected = string.Empty;
 
 		[SerializeField] private bool debugMode = false;
-				
-		private void Awake()
-		{
-			DontDestroyOnLoad(gameObject);
 
-			dependenciesContainer = new Dictionary<string, object>();
+        public long BirthTime { get; private set; }
 
-			BuildDependencyContainer();
-			BindDependenciesToInjectors();
-		}
+        void Awake()
+        {
+            BirthTime = DateTime.Now.Ticks;
+
+            DontDestroyOnLoad(gameObject);
+
+            DestroyOldest();
+            
+            dependenciesContainer = new Dictionary<string, object>();
+            BuildDependencyContainer();
+            BindDependenciesToInjectors();                        
+        }
+
+        private void DestroyOldest()
+        {
+            List<DIManager> dis = FindObjectsOfType<DIManager>().ToList();
+
+            if (1 == dis.Count)
+            {
+                return;
+            }
+
+            DIManager firstBorn = dis.Where(x => x.BirthTime == dis.Min(y => y.BirthTime)).Single();
+
+            if (firstBorn.GetInstanceID() != GetInstanceID())
+            {
+                Destroy(firstBorn.gameObject);
+            }
+        }
 
 		private void BuildDependencyContainer()
 		{
@@ -33,14 +56,42 @@ namespace DI.Injection
 				Debug.Log("<color=#0f0> Dependencies: " + dependencies.Count() + "</color>");
 			}
 
-			foreach (MonoBehaviour dependency in dependencies)
-			{
-				if (debugMode)
-				{
-					Debug.Log("<color=#ff0> Dependency: " + dependency.gameObject.name + "</color>");
-				}
+            string typeKey = string.Empty;
+            string dependencyName = string.Empty;
 
-				dependenciesContainer?.Add(dependency.GetType().ToString(), dependency);
+            foreach (MonoBehaviour dependency in dependencies)
+			{
+                typeKey = dependency.GetType().ToString();
+                dependencyName = dependency.gameObject.name;
+
+                SingletonDependencyAttribute ds = dependency.GetType().GetCustomAttribute<SingletonDependencyAttribute>();
+                if (null != ds)
+                {
+                    DontDestroyOnLoad(dependency.gameObject);
+                    dependencyName += "(SingletonDependency)";
+
+                    if (dependenciesContainer.ContainsKey(typeKey))
+                    {
+                        var newest = (MonoBehaviour) dependenciesContainer[typeKey];
+                        dependenciesContainer.Remove(typeKey);
+                        Destroy(newest.gameObject);
+                    }
+                }
+
+                try
+                {
+                    dependenciesContainer?.Add(typeKey, dependency);
+                }
+                catch(Exception e)
+                {
+                    Debug.Log("<color=#f00> Depencency Injection Error: Consider using SingletonDependencyAttribute for the type: " + typeKey + "</color>");
+                    Debug.Log("<color=#f00> Exception Original Message: " + e.Message + "</color>");
+                }
+
+                if (debugMode)
+                {
+                    Debug.Log("<color=#ff0> Dependency: " + dependencyName + " </color>");
+                }                
 			}
 		}
 
