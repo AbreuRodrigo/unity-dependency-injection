@@ -33,6 +33,7 @@ Example:
 	using DI.Injection;
 	using UnityEngine;
 
+	[DependencyScope(Scope.Singleton)]
 	public class AudioManager : MonoBehaviour, IDependency
 	{
 		public void PlayAudio()
@@ -44,6 +45,7 @@ Example:
 	using DI.Injection;
 	using UnityEngine;
 
+	[DependencyScope(Scope.Singleton)]
 	public class SpriteManager : MonoBehaviour, IDependency
 	{
 		public void DrawSprite()
