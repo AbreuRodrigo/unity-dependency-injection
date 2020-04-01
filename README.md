@@ -10,7 +10,7 @@ Simply add the DIManager prefab to your scene, and then you should click on the 
 
 To make your class a dependency it should implement the interface <b><i>IDependency</i></b>, and to make your class an injector, your should make it implement <b><i>IInjector</i></b>, and the instances of your dependencies in your injector should be annotated with <b><i>Inject</i></b>, that's it.
 
-It's also important to mention that a dependency reference in an injector should always be non-public.
+An injected dependency inside an injector, should always be non-public and it should be defined as an Interface type.
 
 Example:
 
@@ -19,8 +19,8 @@ Example:
 
 	public class GameManager : MonoBehaviour, IInjector
 	{
-		[Inject] private AudioManager audioManager;
-		[Inject] private SpriteManager spriteManager;
+		[Inject] private IAudioManager audioManager;
+		[Inject] private ISpriteManager spriteManager;
 
 		public void Start()
 		{
@@ -34,7 +34,7 @@ Example:
 	using UnityEngine;
 
 	[DependencyScope(Scope.Singleton)]
-	public class AudioManager : MonoBehaviour, IDependency
+	public class AudioManager : MonoBehaviour, IAudioManager, IDependency
 	{
 		public void PlayAudio()
 		{
@@ -46,7 +46,7 @@ Example:
 	using UnityEngine;
 
 	[DependencyScope(Scope.Singleton)]
-	public class SpriteManager : MonoBehaviour, IDependency
+	public class SpriteManager : MonoBehaviour, ISpriteManager, IDependency
 	{
 		public void DrawSprite()
 		{
