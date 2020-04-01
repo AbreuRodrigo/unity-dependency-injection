@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 
+using DI.Injection.Scope;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -52,11 +53,8 @@ namespace DI.Injection.Editor
                 typeKey = dependency.GetType().ToString();
                 dependencyName = dependency.gameObject.name;
 
-                SingletonDependencyAttribute ds = dependency.GetType().GetCustomAttribute<SingletonDependencyAttribute>();
-                if (null != ds)
-                {
-                    dependencyName += "(SingletonDependency)";
-                }
+                DependencyScopeAttribute ds = dependency.GetType().GetCustomAttribute<DependencyScopeAttribute>();
+                dependencyName += $" (Scope: {(null != ds ? ds.Scope : Scope.Scope.Singleton)})";
 
                 Debug.Log("<color=#ff0> Dependency: " + dependencyName + " </color>");
             }
