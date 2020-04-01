@@ -8,7 +8,7 @@ There's an example folder showing how to use it and a sample scene "ExampleScene
 
 Simply add the DIManager prefab to your scene, and then you should click on the menu item "DependencyInjection >> Reset Execution Order".
 
-To make your class a dependency it should implement the interface <b><i>IDependency</i></b>, and to make a your class an injector, your should make it implement <b><i>IInjector</i></b>, and the instences of your dependencies in your injector should be annotated with <b><i>Inject</i></b>, that's it.
+To make your class a dependency it should implement the interface <b><i>IDependency</i></b>, and to make your class an injector, your should make it implement <b><i>IInjector</i></b>, and the instences of your dependencies in your injector should be annotated with <b><i>Inject</i></b>, that's it.
 
 Example:
 
